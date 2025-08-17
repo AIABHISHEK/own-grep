@@ -5,7 +5,10 @@ use std::process;
 fn match_pattern(input_line: &str, pattern: &str) -> bool {
     if pattern.chars().count() == 1 {
         return input_line.contains(pattern);
-    } else {
+    } else if pattern == "//d" {
+        return input_line.chars().any(|c| c.is_numeric() );
+    }
+    else {
         panic!("Unhandled pattern: {}", pattern)
     }
 }
@@ -21,6 +24,7 @@ fn main() {
     }
 
     let pattern = env::args().nth(2).unwrap();
+    println!("Pattern: {}", pattern);
     let mut input_line = String::new();
 
     io::stdin().read_line(&mut input_line).unwrap();
