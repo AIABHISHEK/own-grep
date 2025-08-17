@@ -8,7 +8,7 @@ fn match_pattern(input_line: &str, pattern: &str) -> bool {
     } else if pattern == "\\d" {
         return input_line.chars().any(|c| c.is_numeric() );
     } else if pattern == "\\w" {
-        return input_line.chars().any(|c| c.is_alphanumeric() );
+        return input_line.chars().any(|c| c == '_' || c.is_alphanumeric());
     }
     else {
         panic!("Unhandled pattern: {}", pattern)
@@ -30,7 +30,7 @@ fn main() {
     let mut input_line = String::new();
 
     io::stdin().read_line(&mut input_line).unwrap();
-
+    println!("Input: {}", input_line);
     // Uncomment this block to pass the first stage
     if match_pattern(&input_line, &pattern) {
         process::exit(0)
