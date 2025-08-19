@@ -11,6 +11,10 @@ fn match_pattern(input_line: &str, pattern: &str) -> bool {
         return input_line.chars().any(|c| c == '_' || c.is_alphanumeric());
     } else if pattern.starts_with("[") && pattern.ends_with("]") {
         return input_line.chars().any(|c| pattern[1..pattern.len() - 1].contains(c));
+    } else if pattern.starts_with("\\") {
+        return input_line.contains(&pattern[1..pattern.len()]);
+    } else if pattern.starts_with("[^") && pattern.ends_with("]") {
+        return !input_line.chars().any(|c| pattern[2..pattern.len() - 1].contains(c));
     }
     else {
         panic!("Unhandled pattern: {}", pattern)
@@ -33,7 +37,6 @@ fn main() {
 
     io::stdin().read_line(&mut input_line).unwrap();
     println!("Input: {}", input_line);
-    // Uncomment this block to pass the first stage
     if match_pattern(&input_line, &pattern) {
         process::exit(0)
     } else {
