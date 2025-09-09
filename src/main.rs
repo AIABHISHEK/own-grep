@@ -63,6 +63,13 @@ fn match_character_class(input_line: &str, pattern: &str) -> bool {
     return false;
 }
 
+fn match_start_line(input_line: &str, pattern: &str) -> bool {
+    if input_line.len() >= pattern.len() - 1 {
+        return &input_line[0..pattern.len() - 1] == &pattern[1..pattern.len()];
+    }
+    return false;
+}
+
 fn match_pattern(input_line: &str, pattern: &str) -> bool {
     if pattern.chars().count() == 1 {
         return input_line.contains(pattern);
@@ -74,6 +81,9 @@ fn match_pattern(input_line: &str, pattern: &str) -> bool {
     // } else if pattern == "\\w" {
     //     return input_line.chars().any(|c| c == '_' || c.is_alphanumeric());
     // }
+    else if pattern.starts_with("^") {
+        return match_start_line(input_line, pattern);
+    }
     else if pattern.starts_with("[^") && pattern.ends_with("]") {
         return input_line
             .chars()
