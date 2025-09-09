@@ -9,9 +9,7 @@ fn match_character_class(input_line: &str, pattern: &str) -> bool {
     let n = input_line.chars().count();
     let a = input_line.chars().collect::<Vec<char>>();
     let b = pattern.chars().collect::<Vec<char>>();
-    
-    
-    
+
     // for i in 0..n {
     //     //print chars
     //     print!("{}", a[i]);
@@ -32,16 +30,34 @@ fn match_character_class(input_line: &str, pattern: &str) -> bool {
     //     }
     // }
 
-
-
     while i < n {
-            let mut j = 1;
-            while j<m && i+j-1 < n && (a[i+j-1] == b[j] || (j > 0 && ( (b[j] == 'w' && b[j-1] == '\\' && (a[i+j-1] == '_' || a[i+j-1].is_alphanumeric())) || (b[j] == 'd' && b[j-1] =='\\' && a[i+j-1].is_numeric()) ) )) {
+        let mut j = 0;
+        let mut k = 0;
+        while j < m {
+            if b[j] == '\\' {
                 j += 1;
+                continue;
+            }
+            if j < m
+                && i + k  < n
+                && (a[i + k] == b[j]
+                    || (j > 0
+                        && ((b[j] == 'w'
+                            && b[j - 1] == '\\'
+                            && (a[i + k] == '_' || a[i + k].is_alphanumeric()))
+                            || (b[j] == 'd' && b[j - 1] == '\\' && a[i + k].is_numeric()))))
+            {
+                println!("{},{}", b[j], a[i + k]);
+                j += 1;
+                k += 1;
+            } else {
+                break;
             }
             if j == m {
                 return true;
             }
+        }
+
         i += 1;
     }
     return false;
