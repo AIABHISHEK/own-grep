@@ -5,33 +5,46 @@ use std::process;
 fn match_character_class(input_line: &str, pattern: &str) -> bool {
     let mut i = 0;
 
-    let mut j = 0;
+    // let mut j = 0;
     let n = input_line.chars().count();
-    // let a = input_line.chars().collect::<Vec<char>>();
-    let mut it1 = input_line.chars().enumerate();
-    let mut it2 = pattern.chars().enumerate();
+    let a = input_line.chars().collect::<Vec<char>>();
+    let b = pattern.chars().collect::<Vec<char>>();
+    
+    
+    
+    // for i in 0..n {
+    //     //print chars
+    //     print!("{}", a[i]);
+    //     if i < n - 1 {
+    //         print!(", ");
+    //     }
+    // }
+    // print!("\n");
+    let m = pattern.chars().count();
+    // for i in 0..b.len() {
+    //     //print chars
+    //     if b[i] == '\\' {
+    //         println!("5666");
+    //     }
+    //     print!("{}", b[i]);
+    //     if i < b.len() - 1 {
+    //         print!(", ");
+    //     }
+    // }
+
+
+
     while i < n {
-        let x = it1.next();
-        let y = it2.next();
-        if x.is_none() || y.is_none() {
-            return x.is_none() && y.is_none();
-        }
-        if y.unwrap().1 == '\\' {
-            let next_y = it2.next();
-            if next_y.unwrap().1 == 'd' && x.unwrap().1.is_numeric() {
-                continue;
-            } else if next_y.unwrap().1 == 'w' && x.unwrap().1 == '_'
-                || x.unwrap().1.is_alphanumeric()
-            {
-                continue;
+            let mut j = 1;
+            while j<m && i+j-1 < n && (a[i+j-1] == b[j] || (j > 0 && ( (b[j] == 'w' && b[j-1] == '\\' && (a[i+j-1] == '_' || a[i+j-1].is_alphanumeric())) || (b[j] == 'd' && b[j-1] =='\\' && a[i+j-1].is_numeric()) ) )) {
+                j += 1;
             }
-        } else if x.unwrap().1 == y.unwrap().1 {
-            continue;
-        } else {
-            return false;
-        }
+            if j == m {
+                return true;
+            }
+        i += 1;
     }
-    return true;
+    return false;
 }
 
 fn match_pattern(input_line: &str, pattern: &str) -> bool {
@@ -77,10 +90,10 @@ fn main() {
     io::stdin().read_line(&mut input_line).unwrap();
     println!("Input: {}", input_line);
     if match_pattern(&input_line, &pattern) {
-        // println!("Match");
+        println!("Match");
         process::exit(0)
     } else {
-        // print!("Does not match");
+        print!("Does not match");
         process::exit(1)
     }
 }
