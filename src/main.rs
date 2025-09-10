@@ -70,6 +70,13 @@ fn match_start_line(input_line: &str, pattern: &str) -> bool {
     return false;
 }
 
+fn match_end_line(input_line: &str, pattern: &str) -> bool {
+    if input_line.len() >= pattern.len() - 1 {
+        return &input_line[input_line.len() - pattern.len() + 1..input_line.len()] == &pattern[1..pattern.len()];
+    }
+    return false;
+}
+
 fn match_pattern(input_line: &str, pattern: &str) -> bool {
     if pattern.chars().count() == 1 {
         return input_line.contains(pattern);
@@ -83,6 +90,9 @@ fn match_pattern(input_line: &str, pattern: &str) -> bool {
     // }
     else if pattern.starts_with("^") {
         return match_start_line(input_line, pattern);
+    }
+    else if pattern.ends_with("$") {
+        return match_end_line(input_line, pattern);
     }
     else if pattern.starts_with("[^") && pattern.ends_with("]") {
         return input_line
