@@ -72,7 +72,7 @@ fn match_start_line(input_line: &str, pattern: &str) -> bool {
 
 fn match_end_line(input_line: &str, pattern: &str) -> bool {
     if input_line.len() >= pattern.len() - 1 {
-        return &input_line[input_line.len() - pattern.len() + 1..input_line.len()] == &pattern[1..pattern.len()];
+        return &input_line[input_line.len() - pattern.len() + 1..input_line.len()] == &pattern[0..(pattern.len() - 1)];
     }
     return false;
 }
